@@ -1,23 +1,33 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
+import ClothingForm from '../components/Clothing/ClothingForm.vue'
+
+const routes = [
+  { path: '/', component: Home },
+  { path: '/login', component: Login },
+  { path: '/register', component: Register },
+  {
+    path: '/add-clothing',
+    component: ClothingForm,
+    meta: { requiresAuth: true }  // Protected route
+  }
+]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
-    },
-  ],
+  history: createWebHistory(),
+  routes
+})
+
+// Navigation guard to check if the route requires authentication
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = store.state.isLoggedIn
+  if (to.meta.requiresAuth && !isLoggedIn) {
+    next('/login')  // Redirect to login if not authenticated
+  } else {
+    next()
+  }
 })
 
 export default router
