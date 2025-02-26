@@ -10,22 +10,22 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { useStore } from 'vuex'
 
 export default {
-  data() {
-    return {
-      clothings: [],
-    };
-  },
-  async created() {
-    try {
-      const response = await axios.get('http://your-backend-api.com/api/clothings');
-      this.clothings = response.data;
-    } catch (error) {
-      console.error('Error fetching items:', error);
-    }
-  },
-};
-</script>
+  setup() {
+    // Access the Vuex store
+    const store = useStore()
 
+    // Get clothing items from the store
+    const clothings = store.state.clothings
+
+    // Fetch clothing items from the API on component mount
+    store.dispatch('fetchClothings')
+
+    return {
+      clothings
+    }
+  }
+}
+</script>
