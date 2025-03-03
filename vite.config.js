@@ -5,6 +5,7 @@ import vueDevTools from 'vite-plugin-vue-devtools';
 
 // https://vite.dev/config/
 export default defineConfig({
+  root: 'wardrobe-management-backend',  // Set the root to your backend directory
   plugins: [
     vue(),
     vueDevTools(),
@@ -14,8 +15,10 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  build: {
+    outDir: '../dist',  // Adjust if necessary
+  },
   server: {
-    // Enable history mode with Vue Router
     historyApiFallback: true, // This ensures that all routes are served by index.html
     open: true,  // Automatically open the browser when the dev server starts
   },
